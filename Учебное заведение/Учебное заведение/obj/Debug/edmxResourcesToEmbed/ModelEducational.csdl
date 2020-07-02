@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EducationalProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="GroupsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="StudentsSet" Relationship="Self.FK_StudentsSet_GroupsSet" FromRole="GroupsSet" ToRole="StudentsSet" />
+  </EntityType>
+  <EntityType Name="LessonsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Lesson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Teacher" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Semester" Type="Int32" Nullable="false" />
+    <Property Name="Year" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PointsSet" Relationship="Self.FK_PointsSet_LessonsSet" FromRole="LessonsSet" ToRole="PointsSet" />
+  </EntityType>
+  <EntityType Name="PointsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdLesson" Type="Int32" Nullable="false" />
+    <Property Name="IdStudent" Type="Int32" Nullable="false" />
+    <Property Name="Point" Type="Double" Nullable="false" />
+    <NavigationProperty Name="LessonsSet" Relationship="Self.FK_PointsSet_LessonsSet" FromRole="PointsSet" ToRole="LessonsSet" />
+    <NavigationProperty Name="StudentsSet" Relationship="Self.FK_PointsSet_StudentsSet" FromRole="PointsSet" ToRole="StudentsSet" />
+  </EntityType>
+  <EntityType Name="StudentsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SecondName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdGroup" Type="Int32" Nullable="false" />
+    <Property Name="YearReceipt" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="GroupsSet" Relationship="Self.FK_StudentsSet_GroupsSet" FromRole="StudentsSet" ToRole="GroupsSet" />
+    <NavigationProperty Name="PointsSet" Relationship="Self.FK_PointsSet_StudentsSet" FromRole="StudentsSet" ToRole="PointsSet" />
+  </EntityType>
+  <Association Name="FK_StudentsSet_GroupsSet">
+    <End Role="GroupsSet" Type="Self.GroupsSet" Multiplicity="1" />
+    <End Role="StudentsSet" Type="Self.StudentsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GroupsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StudentsSet">
+        <PropertyRef Name="IdGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PointsSet_LessonsSet">
+    <End Role="LessonsSet" Type="Self.LessonsSet" Multiplicity="1" />
+    <End Role="PointsSet" Type="Self.PointsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LessonsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PointsSet">
+        <PropertyRef Name="IdLesson" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PointsSet_StudentsSet">
+    <End Role="StudentsSet" Type="Self.StudentsSet" Multiplicity="1" />
+    <End Role="PointsSet" Type="Self.PointsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StudentsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PointsSet">
+        <PropertyRef Name="IdStudent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EducationalProjectEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="GroupsSet" EntityType="Self.GroupsSet" />
+    <EntitySet Name="LessonsSet" EntityType="Self.LessonsSet" />
+    <EntitySet Name="PointsSet" EntityType="Self.PointsSet" />
+    <EntitySet Name="StudentsSet" EntityType="Self.StudentsSet" />
+    <AssociationSet Name="FK_StudentsSet_GroupsSet" Association="Self.FK_StudentsSet_GroupsSet">
+      <End Role="GroupsSet" EntitySet="GroupsSet" />
+      <End Role="StudentsSet" EntitySet="StudentsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PointsSet_LessonsSet" Association="Self.FK_PointsSet_LessonsSet">
+      <End Role="LessonsSet" EntitySet="LessonsSet" />
+      <End Role="PointsSet" EntitySet="PointsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PointsSet_StudentsSet" Association="Self.FK_PointsSet_StudentsSet">
+      <End Role="StudentsSet" EntitySet="StudentsSet" />
+      <End Role="PointsSet" EntitySet="PointsSet" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

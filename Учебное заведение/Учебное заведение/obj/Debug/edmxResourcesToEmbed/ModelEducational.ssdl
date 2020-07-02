@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище EducationalProjectModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="GroupsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LessonsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Lesson" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Teacher" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Semester" Type="int" Nullable="false" />
+    <Property Name="Year" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PointsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdLesson" Type="int" Nullable="false" />
+    <Property Name="IdStudent" Type="int" Nullable="false" />
+    <Property Name="Point" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StudentsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SecondName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IdGroup" Type="int" Nullable="false" />
+    <Property Name="YearReceipt" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_PointsSet_LessonsSet">
+    <End Role="LessonsSet" Type="Self.LessonsSet" Multiplicity="1" />
+    <End Role="PointsSet" Type="Self.PointsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LessonsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PointsSet">
+        <PropertyRef Name="IdLesson" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PointsSet_StudentsSet">
+    <End Role="StudentsSet" Type="Self.StudentsSet" Multiplicity="1" />
+    <End Role="PointsSet" Type="Self.PointsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StudentsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PointsSet">
+        <PropertyRef Name="IdStudent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StudentsSet_GroupsSet">
+    <End Role="GroupsSet" Type="Self.GroupsSet" Multiplicity="1" />
+    <End Role="StudentsSet" Type="Self.StudentsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GroupsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StudentsSet">
+        <PropertyRef Name="IdGroup" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище EducationalProjectModelContainer">
+    <EntitySet Name="GroupsSet" EntityType="Self.GroupsSet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LessonsSet" EntityType="Self.LessonsSet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PointsSet" EntityType="Self.PointsSet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StudentsSet" EntityType="Self.StudentsSet" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_PointsSet_LessonsSet" Association="Self.FK_PointsSet_LessonsSet">
+      <End Role="LessonsSet" EntitySet="LessonsSet" />
+      <End Role="PointsSet" EntitySet="PointsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PointsSet_StudentsSet" Association="Self.FK_PointsSet_StudentsSet">
+      <End Role="StudentsSet" EntitySet="StudentsSet" />
+      <End Role="PointsSet" EntitySet="PointsSet" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StudentsSet_GroupsSet" Association="Self.FK_StudentsSet_GroupsSet">
+      <End Role="GroupsSet" EntitySet="GroupsSet" />
+      <End Role="StudentsSet" EntitySet="StudentsSet" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
